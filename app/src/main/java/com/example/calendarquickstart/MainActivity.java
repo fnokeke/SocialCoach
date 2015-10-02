@@ -14,10 +14,8 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -60,7 +58,8 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     private TextView mResultsText;
 
     private MaterialCalendarView widget;
-    private TextView dateTV;
+    private TextView todayDate;
+    private TextView eventDate;
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         activityLayout.addView(mResultsText);
 
         mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Calendar API ...");
+        mProgress.setMessage("Your events will show in a moment...");
 
         //setContentView(activityLayout);
 
@@ -121,8 +120,13 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
 
-        dateTV = (TextView) findViewById(R.id.dateTV);
-        dateTV.setText(getSelectedDatesString());
+        todayDate = (TextView) findViewById(R.id.todayTV);
+        todayDate.setText(getTodayDateString());
+
+
+        eventDate = (TextView) findViewById(R.id.selectedDateTV);
+        eventDate.setVerticalScrollBarEnabled(true);
+        eventDate.setMovementMethod(new ScrollingMovementMethod());
     }
 
 
@@ -218,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             public void run() {
                 mStatusText.setText("Retrieving data…");
                 mResultsText.setText("");
+                eventDate.setText("");
             }
         });
     }
@@ -241,6 +246,8 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                     mStatusText.setText("Data retrieved using" +
                             " the Google Calendar API here:");
                     mResultsText.setText(TextUtils.join("\n\n", dataStrings));
+                    eventDate.setText(TextUtils.join("\n\n", dataStrings));
+
                 }
             }
         });
@@ -325,11 +332,19 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
     @Override
     public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected) {
-        dateTV.setText(getSelectedDatesString());
+        eventDate.setText("Selected date:" + getSelectedDatesString());
     }
 
     private String getSelectedDatesString() {
         CalendarDay date = widget.getSelectedDate();
+        if (date == null) {
+            return "No Selection";
+        }
+        return FORMATTER.format(date.getDate());
+    }
+
+    private String getTodayDateString() {
+        CalendarDay date = widget.getCurrentDate();
         if (date == null) {
             return "No Selection";
         }
