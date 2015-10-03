@@ -7,29 +7,23 @@
     tools:context="com.example.calendarquickstart.MainActivity">
 
     <TextView
-        android:layout_width="123dp"
-        android:layout_height="91dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Today&apos;s date"
         android:id="@+id/todayTV"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Event shows here..."
         android:id="@+id/selectedDateTV"
-        android:layout_gravity="bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/calendarView"
-        android:layout_alignEnd="@+id/calendarView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView"
-        android:textSize="13dp" />
+        android:layout_below="@+id/todayTV"
+        android:textSize="15sp" />
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
@@ -38,28 +32,21 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:mcv_showOtherDates="all"
         app:mcv_selectionColor="#00F"
-        android:layout_toEndOf="@+id/todayTV" />
+        android:layout_below="@+id/selectedDateTV" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Events"
-        android:id="@+id/textView"
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dip"
         android:layout_below="@+id/calendarView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="1dp" />
+        />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Today"
-        android:id="@+id/textView2"
-        android:layout_toLeftOf="@+id/calendarView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/calendarView" />
+        android:layout_below="@+id/tabs"
+        tools:context=".MainActivity" />
 
 
 </RelativeLayout>

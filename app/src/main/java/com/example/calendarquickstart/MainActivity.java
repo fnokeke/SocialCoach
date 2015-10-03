@@ -1,5 +1,6 @@
 package com.example.calendarquickstart;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -25,6 +26,7 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -117,16 +119,23 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
         setContentView(R.layout.activity_main);
 
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+
+        // Bind the tabs to the ViewPager
+        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setViewPager(pager);
+
         widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
 
         todayDate = (TextView) findViewById(R.id.todayTV);
         todayDate.setText(getTodayDateString());
 
-
         eventDate = (TextView) findViewById(R.id.selectedDateTV);
         eventDate.setVerticalScrollBarEnabled(true);
         eventDate.setMovementMethod(new ScrollingMovementMethod());
+
     }
 
 
