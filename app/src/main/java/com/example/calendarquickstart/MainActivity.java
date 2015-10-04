@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         todayDate = (TextView) findViewById(R.id.todayTV);
         todayDate.setText(getTodayDateString());
 
-        eventDate = (TextView) findViewById(R.id.selectedDateTV);
+        eventDate = (TextView) findViewById(R.id.eventTV);
         eventDate.setVerticalScrollBarEnabled(true);
         eventDate.setMovementMethod(new ScrollingMovementMethod());
 
