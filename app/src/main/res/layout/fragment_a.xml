@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/event_label"
         android:id="@+id/eventTV"/>
-    
+
     <TextView
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="fill_parent"

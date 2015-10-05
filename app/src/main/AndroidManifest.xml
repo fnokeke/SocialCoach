@@ -3,12 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.calendarquickstart">
 
+    <uses-sdk tools:overrideLibrary="com.prolificinteractive.materialcalendarview"/>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-sdk tools:overrideLibrary="com.prolificinteractive.materialcalendarview"/>
+
+    <!-- Used to start logging after re-boot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -28,4 +38,21 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
     </application>
+
+    <receiver android:name=".business.manager.LocationLoggerServiceManager"
+        android:enabled="true"
+        android:exported="false"
+        android:label="LocationLoggerServiceManager">
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+    </receiver>
+
+    <receiver android:name=".gps.GpsLocationReceiver">
+        <intent-filter>
+            <action android:name="android.location.PROVIDERS_CHANGED" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </receiver>
+
 </manifest>
