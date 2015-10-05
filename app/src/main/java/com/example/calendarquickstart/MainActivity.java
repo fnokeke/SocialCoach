@@ -22,7 +22,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -59,7 +58,8 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
     private MaterialCalendarView widget;
     private TextView todayDate;
-
+    private ViewPager pager;
+    private PagerSlidingTabStrip tabs;
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
     /**
@@ -70,17 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LinearLayout activityLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        activityLayout.setLayoutParams(lp);
-        activityLayout.setOrientation(LinearLayout.VERTICAL);
-        activityLayout.setPadding(16, 16, 16, 16);
-
-        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        setContentView(R.layout.activity_main);
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Your events will show in a moment...");
@@ -98,20 +88,17 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                 .build();
 
 
-        setContentView(R.layout.activity_main);
-
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-
-        // Bind the tabs to the ViewPager
-        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabs.setViewPager(pager);
-
         widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
 
         todayDate = (TextView) findViewById(R.id.todayTV);
         todayDate.setText(getTodayDateString());
+
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setViewPager(pager);
     }
 
 
