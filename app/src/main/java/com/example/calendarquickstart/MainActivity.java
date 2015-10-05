@@ -29,7 +29,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,12 +56,9 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     com.google.api.services.calendar.Calendar mService;
     GoogleAccountCredential credential;
     ProgressDialog mProgress;
-    private TextView mStatusText;
-    private TextView mResultsText;
 
     private MaterialCalendarView widget;
     private TextView todayDate;
-    private TextView eventDate;
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
@@ -85,23 +82,8 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        mStatusText = new TextView(this);
-        mStatusText.setLayoutParams(tlp);
-        mStatusText.setTypeface(null, Typeface.BOLD);
-        mStatusText.setText("Retrieving data...");
-        activityLayout.addView(mStatusText);
-
-        mResultsText = new TextView(this);
-        mResultsText.setLayoutParams(tlp);
-        mResultsText.setPadding(16, 16, 16, 16);
-        mResultsText.setVerticalScrollBarEnabled(true);
-        mResultsText.setMovementMethod(new ScrollingMovementMethod());
-        activityLayout.addView(mResultsText);
-
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Your events will show in a moment...");
-
-        //setContentView(activityLayout);
 
         // Initialize credentials and service object.
         SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
@@ -114,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                 transport, jsonFactory, credential)
                 .setApplicationName("Google Calendar API Android Quickstart")
                 .build();
-
 
 
         setContentView(R.layout.activity_main);
@@ -131,11 +112,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
         todayDate = (TextView) findViewById(R.id.todayTV);
         todayDate.setText(getTodayDateString());
-
-        eventDate = (TextView) findViewById(R.id.eventTV);
-        eventDate.setVerticalScrollBarEnabled(true);
-        eventDate.setMovementMethod(new ScrollingMovementMethod());
-
     }
 
 
@@ -149,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         if (isGooglePlayServicesAvailable()) {
             refreshResults();
         } else {
-            mStatusText.setText("Google Play Services required: " +
+            FragmentA.setEventTitle("Google Play Services required: " +
                     "after installing, close and relaunch this app.");
         }
     }
@@ -189,7 +165,9 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                         editor.commit();
                     }
                 } else if (resultCode == RESULT_CANCELED) {
-                    mStatusText.setText("Account unspecified.");
+                    Log.i("RESULT_CANCELED:", "Account unspecified");
+                    //FragmentA.setEventTitle("Account unspecified.");
+                    //@TODO: initial code doesn't work so log used. Perhaps toast will be better
                 }
                 break;
             case REQUEST_AUTHORIZATION:
@@ -215,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                 mProgress.show();
                 new ApiAsyncTask(this).execute();
             } else {
-                mStatusText.setText("No network connection available.");
+                FragmentA.setEventTitle("No network connection available.");
             }
         }
     }
@@ -229,9 +207,9 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mStatusText.setText("Retrieving data…");
-                mResultsText.setText("");
-                eventDate.setText("");
+                //@TODO: code causing crash so have to comment out
+                //FragmentA.setEventTitle("Retrieving data...");
+                FragmentA.setEvent("");
             }
         });
     }
@@ -247,15 +225,15 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                //@TODO: commented parts still causing crashes :(
                 if (dataStrings == null) {
-                    mStatusText.setText("Error retrieving data!");
+                   // FragmentA.setEventTitle("Error retrieving data!");
                 } else if (dataStrings.size() == 0) {
-                    mStatusText.setText("No data found.");
+                   // FragmentA.setEventTitle("No data found.");
                 } else {
-                    mStatusText.setText("Data retrieved using" +
-                            " the Google Calendar API here:");
-                    mResultsText.setText(TextUtils.join("\n\n", dataStrings));
-                    eventDate.setText(TextUtils.join("\n\n", dataStrings));
+                    //FragmentA.setEventTitle("Data retrieved using" +
+                        //    " the Google Calendar API here:");
+                    FragmentA.setEvent(TextUtils.join("\n\n", dataStrings));
 
                 }
             }
@@ -272,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mStatusText.setText(message);
+                FragmentA.setEventTitle(message);
             }
         });
     }
@@ -341,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
     @Override
     public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected) {
-        eventDate.setText("Selected date:" + getSelectedDatesString());
+        todayDate.setText("Selected date:" + getSelectedDatesString());
     }
 
     private String getSelectedDatesString() {
