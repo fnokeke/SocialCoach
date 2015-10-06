@@ -6,56 +6,31 @@
     android:orientation="vertical"
     tools:context="com.example.calendarquickstart.MainActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="40"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:weightSum="2">
-
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/calendarView"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            app:mcv_selectionColor="#00F"
-            app:mcv_showOtherDates="all" />
 
         <TextView
             android:id="@+id/todayTV"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:layout_toLeftOf="@id/calendarView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/today_label"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <Button
-            android:id="@+id/start_updates_button"
-            android:text="@string/start_updates"
-            android:onClick="startUpdatesButtonHandler"
-            android:layout_width="25dp"
-            android:layout_height="50dp"
-            android:layout_alignEnd="@+id/stop_updates_button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/stop_updates_button"
-            android:layout_below="@+id/todayTV" />
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/calendarView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:mcv_selectionColor="#00F"
+            app:mcv_showOtherDates="all" />
 
-        <Button
-            android:id="@+id/stop_updates_button"
-            android:text="@string/stop_updates"
-            android:onClick="stopUpdatesButtonHandler"
-            android:layout_width="25dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/calendarView"
-            android:enabled="false"/>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
     <RelativeLayout

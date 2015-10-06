@@ -68,9 +68,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     protected LocationRequest mLocationRequest;
     protected Location mCurrentLocation;
 
-    protected Button mStartUpdatesButton;
-    protected Button mStopUpdatesButton;
-
     protected Boolean mRequestingLocationUpdates;
     protected String mLastUpdateTime;
 
@@ -108,11 +105,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         setContentView(R.layout.activity_main);
 
         //========
-
-        // Locate the UI widgets.
-        mStartUpdatesButton = (Button) findViewById(R.id.start_updates_button);
-        mStopUpdatesButton = (Button) findViewById(R.id.stop_updates_button);
-
         mRequestingLocationUpdates = true;
         mLastUpdateTime = "";
 
@@ -163,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
                 mRequestingLocationUpdates = savedInstanceState.getBoolean(
                         REQUESTING_LOCATION_UPDATES_KEY);
-                setButtonsEnabledState();
+               // setButtonsEnabledState();
             }
 
             // Update the value of mCurrentLocation from the Bundle and update the UI to show the
@@ -208,22 +200,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    public void startUpdatesButtonHandler(View view) {
-        if (!mRequestingLocationUpdates) {
-            mRequestingLocationUpdates = true;
-            setButtonsEnabledState();
-            startLocationUpdates();
-        }
-    }
-
-    public void stopUpdatesButtonHandler(View view) {
-        if (mRequestingLocationUpdates) {
-            mRequestingLocationUpdates = false;
-            setButtonsEnabledState();
-            stopLocationUpdates();
-        }
-    }
-
     protected void startLocationUpdates() {
         // The final argument to {@code requestLocationUpdates()} is a LocationListener
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
@@ -231,15 +207,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                 mGoogleApiClient, mLocationRequest, this);
     }
 
-    private void setButtonsEnabledState() {
-        if (mRequestingLocationUpdates) {
-            mStartUpdatesButton.setEnabled(false);
-            mStopUpdatesButton.setEnabled(true);
-        } else {
-            mStartUpdatesButton.setEnabled(true);
-            mStopUpdatesButton.setEnabled(false);
-        }
-    }
 
     private void updateUI() {
         if (mCurrentLocation != null) {
