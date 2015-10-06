@@ -1,18 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#F0F0F0">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/layout_padding">
 
     <TextView
+        android:id="@+id/latitude_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="This is Fragment B"
-        android:id="@+id/textViewFragB"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_marginTop="@dimen/ui_group_top_margin"
+        android:text="@string/latitude_label"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/latitude_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/latitude_label"
+        android:layout_marginLeft="@dimen/small_margin_left"
+        android:layout_toRightOf="@+id/latitude_label"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/longitude_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/latitude_label"
+        android:text="@string/longitude_label"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/longitude_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/longitude_label"
+        android:layout_marginLeft="@dimen/small_margin_left"
+        android:layout_toRightOf="@+id/longitude_label"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/last_update_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/longitude_label"
+        android:text="@string/last_update_time_label"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/last_update_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/last_update_time_label"
+        android:layout_marginLeft="@dimen/small_margin_left"
+        android:layout_toRightOf="@+id/last_update_time_label"
+        android:textSize="@dimen/default_text_size" />
 </RelativeLayout>
