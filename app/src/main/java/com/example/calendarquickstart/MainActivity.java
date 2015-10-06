@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     protected LocationRequest mLocationRequest;
     protected Location mCurrentLocation;
 
-    protected Boolean mRequestingLocationUpdates;
     protected String mLastUpdateTime;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -105,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         setContentView(R.layout.activity_main);
 
         //========
-        mRequestingLocationUpdates = true;
         mLastUpdateTime = "";
 
         // Update values using data stored in the Bundle.
@@ -150,14 +148,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     private void updateValuesFromBundle(Bundle savedInstanceState) {
         Log.i(TAG, "Updating values from bundle");
         if (savedInstanceState != null) {
-            // Update the value of mRequestingLocationUpdates from the Bundle, and make sure that
-            // the Start Updates and Stop Updates buttons are correctly enabled or disabled.
-            if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
-                mRequestingLocationUpdates = savedInstanceState.getBoolean(
-                        REQUESTING_LOCATION_UPDATES_KEY);
-               // setButtonsEnabledState();
-            }
-
             // Update the value of mCurrentLocation from the Bundle and update the UI to show the
             // correct latitude and longitude.
             if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
@@ -250,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         }
 
         //Location
-        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
+        if (mGoogleApiClient.isConnected()) {
             startLocationUpdates();
         }
     }
@@ -290,13 +280,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             updateUI();
         }
-
-        // If the user presses the Start Updates button before GoogleApiClient connects, we set
-        // mRequestingLocationUpdates to true (see startUpdatesButtonHandler()). Here, we check
-        // the value of mRequestingLocationUpdates and if it is true, we start location updates.
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
+        startLocationUpdates();
     }
 
     /**
@@ -307,8 +291,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateUI();
-        Toast.makeText(this, getResources().getString(R.string.location_updated_message),
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -331,7 +313,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
      * Stores activity data in the Bundle.
      */
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
         savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
         savedInstanceState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
         super.onSaveInstanceState(savedInstanceState);
