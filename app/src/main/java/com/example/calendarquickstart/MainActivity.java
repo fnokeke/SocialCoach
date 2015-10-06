@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         mStartUpdatesButton = (Button) findViewById(R.id.start_updates_button);
         mStopUpdatesButton = (Button) findViewById(R.id.stop_updates_button);
 
-        mRequestingLocationUpdates = false;
+        mRequestingLocationUpdates = true;
         mLastUpdateTime = "";
 
         // Update values using data stored in the Bundle.
@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabs.setViewPager(pager);
+
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {
@@ -241,12 +242,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     }
 
     private void updateUI() {
-   /*     if (mCurrentLocation != null) {
-            mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
-            mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
-            mLastUpdateTimeTextView.setText(mLastUpdateTime);
-        }*/
-
         if (mCurrentLocation != null) {
             FragmentB.updateUI("lat", String.valueOf(mCurrentLocation.getLatitude()));
             FragmentB.updateUI("lon", String.valueOf(mCurrentLocation.getLongitude()));
@@ -266,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     }
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -274,10 +268,10 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     }
 
 
-        /**
-         * Called whenever this activity is pushed to the foreground, such as after
-         * a call to onCreate().
-         */
+    /**
+     * Called whenever this activity is pushed to the foreground, such as after
+     * a call to onCreate().
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -377,7 +371,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     }
 
 
-
     /**
      * Called when an activity launched here (specifically, AccountPicker
      * and authorization) exits, giving you the requestCode you started it with,
@@ -475,12 +468,12 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             public void run() {
                 //@TODO: commented parts still causing crashes :(
                 if (dataStrings == null) {
-                   // FragmentA.setEventTitle("Error retrieving data!");
+                    // FragmentA.setEventTitle("Error retrieving data!");
                 } else if (dataStrings.size() == 0) {
-                   // FragmentA.setEventTitle("No data found.");
+                    // FragmentA.setEventTitle("No data found.");
                 } else {
                     //FragmentA.setEventTitle("Data retrieved using" +
-                        //    " the Google Calendar API here:");
+                    //    " the Google Calendar API here:");
                     FragmentA.setEvent(TextUtils.join("\n\n", dataStrings));
 
                 }
@@ -567,7 +560,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
     @Override
     public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected) {
-        todayDate.setText("Selected date:" + getSelectedDatesString());
+        todayDate.setText(getSelectedDatesString());
     }
 
     private String getSelectedDatesString() {
