@@ -21,17 +21,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
+import java.util.Locale;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -60,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
-    protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     protected final static String LOCATION_KEY = "location-key";
     protected final static String LAST_UPDATED_TIME_STRING_KEY = "last-updated-time-string-key";
 
@@ -200,8 +203,12 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
     private void updateUI() {
         if (mCurrentLocation != null) {
-            FragmentB.updateUI("lat", String.valueOf(mCurrentLocation.getLatitude()));
-            FragmentB.updateUI("lon", String.valueOf(mCurrentLocation.getLongitude()));
+            Double lat = mCurrentLocation.getLatitude();
+            Double lon = mCurrentLocation.getLongitude();
+
+            FragmentB.updateUI("lat", String.valueOf(lat));
+            FragmentB.updateUI("lon", String.valueOf(lon));
+            FragmentB.updateUI("address", getReverseGeocode(lat,lon));
             FragmentB.updateUI("time", mLastUpdateTime);
         }
     }
@@ -525,5 +532,34 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             return "No Selection";
         }
         return FORMATTER.format(date.getDate());
+    }
+
+    private String getReverseGeocode(Double lat, Double lon) {
+        String reverseAddress = "";
+
+        try {
+            Geocoder geocoder = new Geocoder(MainActivity.this, Locale.ENGLISH);
+            List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
+
+            if (geocoder.isPresent() && addresses != null) {
+
+                Address fetchedAddress = addresses.get(0);
+
+                StringBuilder sb = new StringBuilder();
+                for(int i=0; i<fetchedAddress.getMaxAddressLineIndex(); i++) {
+                    sb.append(fetchedAddress.getAddressLine(i)).append("\n");
+                }
+
+                reverseAddress = sb.toString();
+
+            } else {
+                reverseAddress = "No location found.";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(),"Could not get address..!", Toast.LENGTH_LONG).show();
+        }
+
+        return reverseAddress;
     }
 }

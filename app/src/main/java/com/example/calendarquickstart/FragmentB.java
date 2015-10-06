@@ -15,6 +15,7 @@ public class FragmentB extends Fragment {
     View rootView;
     private static TextView lonTV;
     private static TextView latTV;
+    private static TextView addressTV;
     private static TextView timeTV;
 
 
@@ -26,6 +27,7 @@ public class FragmentB extends Fragment {
 
         lonTV = (TextView)rootView.findViewById(R.id.latitude_text);
         latTV = (TextView) rootView.findViewById(R.id.longitude_text);
+        addressTV = (TextView) rootView.findViewById(R.id.address_text);
         timeTV = (TextView) rootView.findViewById(R.id.last_update_time_text);
 
         return rootView;
@@ -36,6 +38,8 @@ public class FragmentB extends Fragment {
             lonTV.setText(text);
         else if (uiElement.equals("lat"))
             latTV.setText(text);
+        else if (uiElement.equals("address"))
+            addressTV.setText(text);
         else if (uiElement.equals("time"))
             timeTV.setText(text);
     }
