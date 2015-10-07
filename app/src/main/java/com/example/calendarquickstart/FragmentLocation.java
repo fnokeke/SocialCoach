@@ -34,14 +34,22 @@ public class FragmentLocation extends Fragment {
     }
 
     public static void updateUI(String uiElement, String text) {
-        if (uiElement.equals("lon"))
-            lonTV.setText(text);
-        else if (uiElement.equals("lat"))
-            latTV.setText(text);
-        else if (uiElement.equals("address"))
-            addressTV.setText(text);
-        else if (uiElement.equals("time"))
-            timeTV.setText(text);
+        CharSequence tmp = "";
+        if (uiElement.equals("lon")) {
+            tmp = lonTV.getText();
+            lonTV.setText(text + "\n" + tmp);
+        }
+        else if (uiElement.equals("lat")) {
+            tmp = latTV.getText();
+            latTV.setText(text + "\n" + tmp);            latTV.setText(text);
+        }
+        else if (uiElement.equals("address")) {
+            tmp = addressTV.getText();
+            addressTV.setText(text + "\n" + tmp);         }
+        else if (uiElement.equals("time")) {
+            tmp = timeTV.getText();
+            timeTV.setText(text + "\n" + tmp);
+        }
     }
 
 }

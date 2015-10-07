@@ -27,6 +27,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.text.TextUtils;
 
 import java.io.IOException;
@@ -41,6 +42,11 @@ import java.util.Locale;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
     //Location
     protected static final String TAG = "location-updates-sample";
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 30*60*1000; //1sec=1000ms
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
@@ -242,10 +248,11 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
     @Override
     protected void onResume() {
         super.onResume();
+
         if (isGooglePlayServicesAvailable()) {
-            refreshResults();
+           // refreshResults(System.currentTimeMillis());
         } else {
-            FragmentEvent.updateUI("event_title", "Google Play Services required: " +
+            FragmentEvent.updateUI("event", "Google Play Services required: " +
                     "after installing, close and relaunch this app.");
         }
 
@@ -384,15 +391,15 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
      * email address isn't known yet, then call chooseAccount() method so the
      * user can pick an account.
      */
-    private void refreshResults() {
+    private void refreshResults(Date selected_date) {
         if (credential.getSelectedAccountName() == null) {
             chooseAccount();
         } else {
             if (isDeviceOnline()) {
                 mProgress.show();
-                new ApiAsyncTask(this).execute();
+                new ApiAsyncTask(this).execute(selected_date);
             } else {
-                FragmentEvent.updateUI("event_title", "No network connection available.");
+                FragmentEvent.updateUI("event", "No network connection available.");
             }
         }
     }
@@ -426,9 +433,9 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             public void run() {
                 //@TODO: commented parts still causing crashes :(
                 if (dataStrings == null) {
-                    // FragmentEvent.setEventTitle("Error retrieving data!");
+                    FragmentEvent.updateUI("event", "Error retrieving data!");
                 } else if (dataStrings.size() == 0) {
-                    // FragmentEvent.setEventTitle("No data found.");
+                    FragmentEvent.updateUI("event", "No events found.");
                 } else {
                     //FragmentEvent.setEventTitle("Data retrieved using" +
                     //    " the Google Calendar API here:");
@@ -518,10 +525,12 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
     @Override
     public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected) {
-        todayDate.setText(getSelectedDatesString());
+        String selected_date = getSelectedDatesString();
+        todayDate.setText(selected_date);
+        refreshResults(getUtilDate());
     }
 
-    private String getSelectedDatesString() {
+    public String getSelectedDatesString() {
         CalendarDay date = widget.getSelectedDate();
         if (date == null) {
             return "No Selection";
@@ -529,7 +538,14 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         return FORMATTER.format(date.getDate());
     }
 
-    private String getTodayDateString() {
+    public Date getUtilDate() {
+        CalendarDay date = widget.getSelectedDate();
+        return date.getDate();
+    }
+
+
+
+    public String getTodayDateString() {
         CalendarDay date = widget.getCurrentDate();
         if (date == null) {
             return "No Selection";
@@ -537,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         return FORMATTER.format(date.getDate());
     }
 
-    private String getReverseGeocode(Double lat, Double lon) {
+     public String getReverseGeocode(Double lat, Double lon) {
         String reverseAddress = "";
 
         try {
@@ -566,4 +582,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         return reverseAddress;
     }
 
+    public void showPopUp(View view) {
+
+    }
 }

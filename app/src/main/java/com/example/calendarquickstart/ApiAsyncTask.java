@@ -1,6 +1,8 @@
 package com.example.calendarquickstart;
 
 import android.os.AsyncTask;
+import android.util.Log;
+
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.util.DateTime;
@@ -8,15 +10,18 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.*;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * An asynchronous task that handles the Google Calendar API call.
  * Placing the API calls in their own task ensures the UI stays responsive.
  */
-public class ApiAsyncTask extends AsyncTask<Void, Void, Void> {
+public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
     private MainActivity mActivity;
+
 
     /**
      * Constructor.
@@ -31,10 +36,10 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Void> {
      * @param params no parameters needed for this task.
      */
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Void doInBackground(Date... params) {
         try {
             mActivity.clearResultsText();
-            mActivity.updateResultsText(getDataFromApi());
+            mActivity.updateResultsText(getDataFromApi(params[0]));
 
         } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
             mActivity.showGooglePlayServicesAvailabilityErrorDialog(
@@ -60,13 +65,30 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Void> {
      * @return List of Strings describing returned events.
      * @throws IOException
      */
-    private List<String> getDataFromApi() throws IOException {
+    private List<String> getDataFromApi(Date selected_date) throws IOException {
+        long current_time_millis = 0;
+
+        try {
+            Log.i("**selected date**:", selected_date.toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+            Log.i("selected ms of event:", Long.toString(selected_date.getTime()));
+            current_time_millis = selected_date.getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        com.google.api.client.util.DateTime startofday = new com.google.api.client.util.DateTime(getStartOfDayMillis(current_time_millis));
+        com.google.api.client.util.DateTime endofday = new com.google.api.client.util.DateTime(getEndOfDayMillis(current_time_millis));
+        Log.i("start event:", startofday.toString());
+        Log.i("stop event:", endofday.toString());
+
         // List the next 10 events from the primary calendar.
-        DateTime now = new DateTime(System.currentTimeMillis());
+        //DateTime now = new DateTime(System.currentTimeMillis());
         List<String> eventStrings = new ArrayList<String>();
         Events events = mActivity.mService.events().list("primary")
                 .setMaxResults(20)
-                .setTimeMin(now)
+                .setTimeMin(startofday)
+                .setTimeMax(endofday)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();
@@ -82,7 +104,20 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Void> {
             eventStrings.add(
                     String.format("%s (%s)", event.getSummary(), start));
         }
+        Log.i("event_strings:", eventStrings.toString());
         return eventStrings;
     }
+
+    private long getStartOfDayMillis(long date_in_ms) {
+        org.joda.time.DateTime current_date = new org.joda.time.DateTime(date_in_ms);
+        return current_date.withTimeAtStartOfDay().getMillis();
+    }
+
+    private long getEndOfDayMillis(long date_in_ms) {
+        org.joda.time.DateTime current_date = new org.joda.time.DateTime(date_in_ms);
+        return current_date.plusDays(1).withTimeAtStartOfDay().getMillis();
+    }
+
+
 
 }

@@ -13,13 +13,54 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <TextView
-            android:id="@+id/todayTV"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:text="@string/today_label"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/todayTV"
+                android:onClick="showPopUp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.40"
+                android:text="@string/today_label"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:background="#FF0000"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Study Time"
+                android:gravity="center"
+                android:id="@+id/study_text"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.20" />
+
+            <TextView
+                android:background="#0000FF"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Classroom Attendance"
+                android:gravity="center"
+                android:id="@+id/attendance_text"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.20" />
+
+            <TextView
+                android:background="#00FF00"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Mood"
+                android:gravity="center"
+                android:id="@+id/mood_text"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.20" />
+
+
+        </LinearLayout>
 
         <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             xmlns:app="http://schemas.android.com/apk/res-auto"
