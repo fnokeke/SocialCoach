@@ -65,7 +65,7 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Void> {
         DateTime now = new DateTime(System.currentTimeMillis());
         List<String> eventStrings = new ArrayList<String>();
         Events events = mActivity.mService.events().list("primary")
-                .setMaxResults(10)
+                .setMaxResults(20)
                 .setTimeMin(now)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)

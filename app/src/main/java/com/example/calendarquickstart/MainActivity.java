@@ -40,8 +40,6 @@ import java.util.Locale;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +54,10 @@ import com.google.android.gms.location.LocationServices;
 
 public class MainActivity extends AppCompatActivity implements OnDateSelectedListener,
         ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+
+    //files
+    protected static final String FILE_LOCATION = "social_coach_location";
+    protected static final String FILE_EVENT = "social_coach_event";
 
 
     //Location
@@ -206,10 +208,10 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             Double lat = mCurrentLocation.getLatitude();
             Double lon = mCurrentLocation.getLongitude();
 
-            FragmentB.updateUI("lat", String.valueOf(lat));
-            FragmentB.updateUI("lon", String.valueOf(lon));
-            FragmentB.updateUI("address", getReverseGeocode(lat,lon));
-            FragmentB.updateUI("time", mLastUpdateTime);
+            FragmentLocation.updateUI("lat", String.valueOf(lat));
+            FragmentLocation.updateUI("lon", String.valueOf(lon));
+            FragmentLocation.updateUI("address", getReverseGeocode(lat, lon));
+            FragmentLocation.updateUI("time", mLastUpdateTime);
         }
     }
 
@@ -242,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         if (isGooglePlayServicesAvailable()) {
             refreshResults();
         } else {
-            FragmentA.setEventTitle("Google Play Services required: " +
+            FragmentEvent.updateUI("event_title", "Google Play Services required: " +
                     "after installing, close and relaunch this app.");
         }
 
@@ -362,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                     }
                 } else if (resultCode == RESULT_CANCELED) {
                     Log.i("RESULT_CANCELED:", "Account unspecified");
-                    //FragmentA.setEventTitle("Account unspecified.");
+                    //FragmentEvent.setEventTitle("Account unspecified.");
                     //@TODO: initial code doesn't work so log used. Perhaps toast will be better
                 }
                 break;
@@ -389,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
                 mProgress.show();
                 new ApiAsyncTask(this).execute();
             } else {
-                FragmentA.setEventTitle("No network connection available.");
+                FragmentEvent.updateUI("event_title", "No network connection available.");
             }
         }
     }
@@ -404,8 +406,8 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             @Override
             public void run() {
                 //@TODO: code causing crash so have to comment out
-                //FragmentA.setEventTitle("Retrieving data...");
-                FragmentA.setEvent("");
+                //FragmentEvent.setEventTitle("Retrieving data...");
+                FragmentEvent.updateUI("event", "");
             }
         });
     }
@@ -423,13 +425,13 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             public void run() {
                 //@TODO: commented parts still causing crashes :(
                 if (dataStrings == null) {
-                    // FragmentA.setEventTitle("Error retrieving data!");
+                    // FragmentEvent.setEventTitle("Error retrieving data!");
                 } else if (dataStrings.size() == 0) {
-                    // FragmentA.setEventTitle("No data found.");
+                    // FragmentEvent.setEventTitle("No data found.");
                 } else {
-                    //FragmentA.setEventTitle("Data retrieved using" +
+                    //FragmentEvent.setEventTitle("Data retrieved using" +
                     //    " the Google Calendar API here:");
-                    FragmentA.setEvent(TextUtils.join("\n\n", dataStrings));
+                    FragmentEvent.updateUI("event", TextUtils.join("\n\n", dataStrings));
 
                 }
             }
@@ -446,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                FragmentA.setEventTitle(message);
+                FragmentEvent.updateUI("event_title", message);
             }
         });
     }
@@ -562,4 +564,5 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
         return reverseAddress;
     }
+
 }

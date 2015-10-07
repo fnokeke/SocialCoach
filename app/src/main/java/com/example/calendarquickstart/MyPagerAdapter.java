@@ -25,6 +25,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return (position == 0)? new FragmentA() : new FragmentB() ;
+        return (position == 0)? new FragmentEvent() : new FragmentLocation() ;
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 /**
  * Created by fnokeke on 10/2/15.
  */
-public class FragmentA extends Fragment {
+public class FragmentEvent extends Fragment {
 
     View rootView;
     private static TextView eventTV;
@@ -26,16 +26,16 @@ public class FragmentA extends Fragment {
         eventTV = (TextView)rootView.findViewById(R.id.eventTV);
         eventTV.setVerticalScrollBarEnabled(true);
         eventTV.setMovementMethod(new ScrollingMovementMethod());
-        eventTV.setText("Supp");
+
+        eventTitleTV = (TextView) rootView.findViewById(R.id.eventTitle);
 
         return rootView;
     }
 
-    public static void setEvent(String text) {
-        eventTV.setText(text);
-    }
-
-    public static void setEventTitle(String text) {
-        eventTitleTV.setText(text);
+    public static void updateUI(String uiElement, String text) {
+        if (uiElement.equals("event"))
+            eventTV.setText(text);
+        else if (uiElement.equals("event_title"))
+            eventTitleTV.setText(text);
     }
 }

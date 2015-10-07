@@ -10,7 +10,7 @@ import android.widget.TextView;
 /**
  * Created by fnokeke on 10/2/15.
  */
-public class FragmentB extends Fragment {
+public class FragmentLocation extends Fragment {
 
     View rootView;
     private static TextView lonTV;
