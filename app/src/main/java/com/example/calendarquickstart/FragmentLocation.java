@@ -23,7 +23,7 @@ public class FragmentLocation extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_b,container,false);
+        rootView = inflater.inflate(R.layout.fragment_location,container,false);
 
         lonTV = (TextView)rootView.findViewById(R.id.latitude_text);
         latTV = (TextView) rootView.findViewById(R.id.longitude_text);

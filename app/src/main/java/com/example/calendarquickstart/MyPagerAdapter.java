@@ -15,16 +15,44 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return (position == 0)? "EVENTS" : "LOCATION" ;
+        String tabname = "";
+
+        switch (position) {
+            case 0:
+                tabname = "Events";
+                break;
+            case 1:
+                tabname = "Location";
+                break;
+            case 2:
+                tabname = "Experience";
+                break;
+
+        }
+        return tabname;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return (position == 0)? new FragmentEvent() : new FragmentLocation() ;
+        Fragment tabfrag = new Fragment();
+
+        switch (position) {
+            case 0:
+                tabfrag = new FragmentEvent();
+                break;
+            case 1:
+                tabfrag = new FragmentLocation();
+                break;
+            case 2:
+                tabfrag = new FragmentExperience();
+                break;
+        }
+
+        return tabfrag;
     }
 }

@@ -21,7 +21,7 @@ public class FragmentEvent extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_a,container,false);
+        rootView = inflater.inflate(R.layout.fragment_event,container,false);
 
         eventTV = (TextView)rootView.findViewById(R.id.eventTV);
         eventTV.setVerticalScrollBarEnabled(true);
