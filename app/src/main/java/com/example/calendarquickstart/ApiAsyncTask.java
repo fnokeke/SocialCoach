@@ -52,8 +52,10 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
                     MainActivity.REQUEST_AUTHORIZATION);
 
         } catch (Exception e) {
-            mActivity.updateStatus("The following error occurred:\n" +
-                    e.getMessage());
+            //@TODO: fix this error that prints to screen
+            //mActivity.updateStatus("The following error occurred:\n" +
+              //      e.getMessage());
+            e.printStackTrace();
         }
         if (mActivity.mProgress.isShowing()) {
             mActivity.mProgress.dismiss();
@@ -103,7 +105,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
                 start = event.getStart().getDate();
             }
             eventStrings.add(
-                    String.format("%s (%s)", event.getSummary(), start));
+                    String.format("%s (%s)", event.getSummary(), convertTo12hrClock(start)));
         }
         Log.i("event_strings:", eventStrings.toString());
         return eventStrings;
@@ -119,6 +121,32 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
         return current_date.plusDays(1).withTimeAtStartOfDay().getMillis();
     }
 
+    //@TODO: refactor code
+    private String convertTo12hrClock(DateTime date_time) {
+        String dt = String.format("%s", date_time);
+        String [] parts = dt.split("T");
+        String onlyTime = parts[1];
 
+        String[] time_parts = onlyTime.split("-");
+        String begin_time = time_parts[0];
+
+        int hr = Integer.parseInt(begin_time.split(":")[0]);
+        String mins = begin_time.split(":")[1];
+
+        //We need to figure if time should be am or pm
+        String time_in_12hrs = "";
+        if (hr == 12)
+            time_in_12hrs = Integer.toString(hr) + ":" + mins + "pm";
+        else if (hr > 12) {
+            hr = hr % 12;
+            time_in_12hrs = Integer.toString(hr) + ":" + mins + "pm";
+        }
+        else {
+            time_in_12hrs = Integer.toString(hr) + ":" + mins + "am";
+        }
+
+        return time_in_12hrs;
+
+    }
 
 }

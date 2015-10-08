@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         //=======
 
         mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Your events will show in a moment...");
+        mProgress.setMessage("Updating events...");
 
         // Initialize credentials and service object.
         SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
