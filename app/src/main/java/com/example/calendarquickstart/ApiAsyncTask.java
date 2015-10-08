@@ -40,6 +40,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
         try {
             mActivity.clearResultsText();
             mActivity.updateResultsText(getDataFromApi(params[0]));
+            mActivity.updateSignals();
 
         } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
             mActivity.showGooglePlayServicesAvailabilityErrorDialog(

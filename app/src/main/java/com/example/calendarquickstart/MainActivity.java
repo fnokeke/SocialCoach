@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -101,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
     private MaterialCalendarView widget;
     private TextView todayDate;
+    private TextView study_text;
+    private TextView attendance_text;
+    private TextView mood_text;
+
     private ViewPager pager;
     private PagerSlidingTabStrip tabs;
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
@@ -154,6 +159,10 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabs.setViewPager(pager);
+
+        study_text = (TextView) findViewById(R.id.study_text);
+        attendance_text = (TextView) findViewById(R.id.attendance_text);
+        mood_text = (TextView) findViewById(R.id.mood_text);
 
     }
 
@@ -220,6 +229,36 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             FragmentLocation.updateUI("address", getReverseGeocode(lat, lon));
             FragmentLocation.updateUI("time", mLastUpdateTime);
         }
+    }
+
+    private int getRandomNum(int min, int max) {
+        Random rand = new Random();
+        return rand.nextInt(max) + min;
+    }
+
+    //@TODO: use enums
+    private int getRandomColor() {
+        int color_num = getRandomNum(1, 3);
+        int color = 0;
+
+        switch(color_num) {
+            case 1:
+                color = R.color.red;
+                break;
+            case 2:
+                color = R.color.green;
+                break;
+            case 3:
+                color = R.color.blue;
+                break;
+        }
+        return color;
+    }
+
+    protected void updateSignals() {
+        study_text.setBackgroundResource(getRandomColor());
+        attendance_text.setBackgroundResource(getRandomColor());
+        mood_text.setBackgroundResource(getRandomColor());
     }
 
 
