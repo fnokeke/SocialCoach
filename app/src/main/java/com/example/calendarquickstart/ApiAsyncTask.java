@@ -25,6 +25,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
 
     /**
      * Constructor.
+     *
      * @param activity MainActivity that spawned this task.
      */
     ApiAsyncTask(MainActivity activity) {
@@ -33,6 +34,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
 
     /**
      * Background task to call Google Calendar API.
+     *
      * @param params no parameters needed for this task.
      */
     @Override
@@ -54,7 +56,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
         } catch (Exception e) {
             //@TODO: fix this error that prints to screen
             //mActivity.updateStatus("The following error occurred:\n" +
-              //      e.getMessage());
+            //      e.getMessage());
             e.printStackTrace();
         }
         if (mActivity.mProgress.isShowing()) {
@@ -65,6 +67,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
 
     /**
      * Fetch a list of the next 10 events from the primary calendar.
+     *
      * @return List of Strings describing returned events.
      * @throws IOException
      */
@@ -89,7 +92,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
         //DateTime now = new DateTime(System.currentTimeMillis());
         List<String> eventStrings = new ArrayList<String>();
         Events events = mActivity.mService.events().list("primary")
-                .setMaxResults(20)
+                .setMaxResults(50)
                 .setTimeMin(startofday)
                 .setTimeMax(endofday)
                 .setOrderBy("startTime")
@@ -99,15 +102,25 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
 
         for (Event event : items) {
             DateTime start = event.getStart().getDateTime();
+            DateTime stop;
             if (start == null) {
                 // All-day events don't have start times, so just use
                 // the start date.
                 start = event.getStart().getDate();
+                eventStrings.add(
+                        String.format("%s (%s)",
+                                event.getSummary(),
+                                convertTo12hrClock(start)));
+            } else { //At this point, there's def a start time and stop time
+                stop = event.getEnd().getDateTime();
+                eventStrings.add(
+                        String.format("%s: %s ~ %s",
+                                event.getSummary(),
+                                convertTo12hrClock(start),
+                                convertTo12hrClock(stop)));
             }
-            eventStrings.add(
-                    String.format("%s (%s)", event.getSummary(), convertTo12hrClock(start)));
+
         }
-        Log.i("event_strings:", eventStrings.toString());
         return eventStrings;
     }
 
@@ -124,7 +137,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
     //@TODO: refactor code
     private String convertTo12hrClock(DateTime date_time) {
         String dt = String.format("%s", date_time);
-        String [] parts = dt.split("T");
+        String[] parts = dt.split("T");
         String onlyTime = parts[1];
 
         String[] time_parts = onlyTime.split("-");
@@ -140,8 +153,7 @@ public class ApiAsyncTask extends AsyncTask<Date, Void, Void> {
         else if (hr > 12) {
             hr = hr % 12;
             time_in_12hrs = Integer.toString(hr) + ":" + mins + "pm";
-        }
-        else {
+        } else {
             time_in_12hrs = Integer.toString(hr) + ":" + mins + "am";
         }
 
