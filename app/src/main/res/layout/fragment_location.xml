@@ -10,60 +10,16 @@
         android:padding="@dimen/layout_padding">
 
         <TextView
-            android:id="@+id/latitude_label"
+            android:id="@+id/joint_loc_labels"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="@dimen/ui_group_top_margin"
-            android:text="@string/latitude_label"
-            android:textSize="@dimen/default_text_size" />
+            android:text="@string/joint_loc_label"
+            android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/latitude_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/latitude_label"
-            android:layout_marginLeft="@dimen/small_margin_left"
-            android:textSize="@dimen/default_text_size" />
-
-        <TextView
-            android:id="@+id/longitude_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/longitude_label"
-            android:textSize="@dimen/default_text_size" />
-
-        <TextView
-            android:id="@+id/longitude_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/longitude_label"
-            android:layout_marginLeft="@dimen/small_margin_left"
-            android:textSize="@dimen/default_text_size" />
-
-        <TextView
-            android:id="@+id/address_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/address_label"
-            android:textSize="@dimen/default_text_size" />
-
-        <TextView
-            android:id="@+id/address_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/small_margin_left"
-            android:textSize="@dimen/default_text_size" />
-
-        <TextView
-            android:id="@+id/last_update_time_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/last_update_time_label"
-            android:textSize="@dimen/default_text_size" />
-
-        <TextView
-            android:id="@+id/last_update_time_text"
+            android:id="@+id/joint_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/small_margin_left"

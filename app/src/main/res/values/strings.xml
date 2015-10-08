@@ -9,6 +9,12 @@
     <string name="latitude_label">Latitude: </string>
     <string name="longitude_label">Longitude: </string>
     <string name="address_label">Address: </string>
+    <string name="joint_loc_label">
+        Time &#160;&#160;&#160;&#160;&#160;&#160;
+        Lat &#160;&#160;&#160;&#160;&#160;&#160;
+        Lon &#160;&#160;&#160;&#160;&#160;&#160;
+        Address &#160;&#160;&#160;&#160;&#160;&#160;
+    </string>
 
     <string name="last_update_time_label">Last location update time: </string>
 </resources>

@@ -13,10 +13,8 @@ import android.widget.TextView;
 public class FragmentLocation extends Fragment {
 
     View rootView;
-    private static TextView lonTV;
-    private static TextView latTV;
-    private static TextView addressTV;
-    private static TextView timeTV;
+    private static TextView joint_text;
+
 
 
 
@@ -24,31 +22,16 @@ public class FragmentLocation extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_location,container,false);
-
-        lonTV = (TextView)rootView.findViewById(R.id.latitude_text);
-        latTV = (TextView) rootView.findViewById(R.id.longitude_text);
-        addressTV = (TextView) rootView.findViewById(R.id.address_text);
-        timeTV = (TextView) rootView.findViewById(R.id.last_update_time_text);
+        joint_text = (TextView) rootView.findViewById(R.id.joint_text);
 
         return rootView;
     }
 
     public static void updateUI(String uiElement, String text) {
         CharSequence tmp = "";
-        if (uiElement.equals("lon")) {
-            tmp = lonTV.getText();
-            lonTV.setText(text + "\n" + tmp);
-        }
-        else if (uiElement.equals("lat")) {
-            tmp = latTV.getText();
-            latTV.setText(text + "\n" + tmp);            latTV.setText(text);
-        }
-        else if (uiElement.equals("address")) {
-            tmp = addressTV.getText();
-            addressTV.setText(text + "\n" + tmp);         }
-        else if (uiElement.equals("time")) {
-            tmp = timeTV.getText();
-            timeTV.setText(text + "\n" + tmp);
+        if (uiElement.equals("joint_label")) {
+            tmp = joint_text.getText();
+            joint_text.setText(text + "\n" + tmp);
         }
     }
 

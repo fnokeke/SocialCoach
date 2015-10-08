@@ -25,6 +25,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
@@ -224,10 +225,12 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             Double lat = mCurrentLocation.getLatitude();
             Double lon = mCurrentLocation.getLongitude();
 
-            FragmentLocation.updateUI("lat", String.valueOf(lat));
-            FragmentLocation.updateUI("lon", String.valueOf(lon));
-            FragmentLocation.updateUI("address", getReverseGeocode(lat, lon));
-            FragmentLocation.updateUI("time", mLastUpdateTime);
+            String joint_text = "";
+            joint_text += mLastUpdateTime + " " +
+                    String.valueOf(lat) + " " +
+                    String.valueOf(lon) + " " +
+                    getReverseGeocode(lat, lon);
+            FragmentLocation.updateUI("joint_label", joint_text);
         }
     }
 
@@ -605,7 +608,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
 
                 StringBuilder sb = new StringBuilder();
                 for(int i=0; i<fetchedAddress.getMaxAddressLineIndex(); i++) {
-                    sb.append(fetchedAddress.getAddressLine(i)).append("\n");
+                    sb.append(fetchedAddress.getAddressLine(i)).append(" ");
                 }
 
                 reverseAddress = sb.toString();
